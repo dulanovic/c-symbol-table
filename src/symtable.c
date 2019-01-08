@@ -3,7 +3,7 @@
 #include "symtable.h"
 
 struct SymbolTable {
-    //
+    const void **firstElement;
 };
 
 SymTable smtb_new(void) {}
