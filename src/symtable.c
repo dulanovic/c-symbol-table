@@ -32,7 +32,8 @@ void smtb_free(SymTable symTable) {
     struct Node *temp;
     for (current = (struct Node *) symTable->first; current != NULL;) {
         temp = current->next;
-        free(current);
+        free((void *) current->key);
+        free((void *) current->value);
         current = temp;
     }
     free(symTable);
@@ -213,6 +214,7 @@ int main(int argc, char **argv) {
     }
     fclose(file);
     smtb_print(smtb);
+    smtb_free(smtb);
 
     return(EXIT_SUCCESS);
 
