@@ -89,9 +89,10 @@ void *smtb_replace(SymTable symTable, const char *key, const void *value) {
     }
     struct Node *current;
     for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
-        if (*current->key == *key) {
+        if (strcmp(current->key, key) == 0) {
             const void *oldValue = current->value;
             current->value = value;
+            current->value = NULL;
             return (void *) oldValue;
         }
     }
@@ -167,28 +168,20 @@ void smtb_map(SymTable symTable, void (*func)(const char *key, void *value, void
 
 void smtb_print(SymTable symTable) {
     printf("\n<<<--------- SYMBOL TABLE --------->>>\n\n");
-    printf("No. of items: %i\n\n--- ITEMS ---\n\n", symTable->length);
+    printf("No. of items: %i\n\n--- ITEMS ---\n\n", (int) smtb_getLength(symTable));
     struct Node *current = (struct Node *) symTable->first;
     int i = 1;
     for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
         printf("-Item #%i-\n\t  KEY ---> %s\n\tVALUE ---> %.8f\n\n", i, current->key, *(double *) current->value);
         i++;
     }
-    /* while (1) {
-        if (current == NULL) {
-            break;
-        }
-        printf("-Item #%i-\n\t  KEY ---> %s\n\tVALUE ---> %.8f\n\n", i, current->key, *(double *) current->value);
-        i++;
-        current = current->next;
-    } */
     printf("\n<<<--------- SYMBOL TABLE --------->>>\n\n");
 }
 
 int main(int argc, char **argv) {
 
     int num;
-    FILE *file = fopen("../_data.txt", "r");
+    FILE *file = fopen("./_data.txt", "r");
     size_t arrayLength, maxWordLength;
     fscanf(file, "%i, %i\n", &arrayLength, &maxWordLength);
     SymTable smtb = smtb_new();
@@ -218,6 +211,16 @@ int main(int argc, char **argv) {
     }
     fclose(file);
     smtb_print(smtb);
+
+    double d1 = 1.0;
+    void *ptr = smtb_replace(smtb, "vmnsdfkjwe", &d1);
+    if (ptr == NULL) {
+        printf("FAILURE!!!\n");
+        return(EXIT_FAILURE);
+    }
+    printf("ptr ---> %.8f\n", *(double *) ptr);
+    // smtb_print(smtb);
+
     smtb_free(smtb);
 
     return(EXIT_SUCCESS);
