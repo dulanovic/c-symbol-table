@@ -6,7 +6,25 @@
 
 #IncludeRegexTransform: 
 
+D:/Projects/C/Symbol-Table/src/symtable.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+assert.h
+-
+symtable.h
+D:/Projects/C/Symbol-Table/src/symtable.h
+
+D:/Projects/C/Symbol-Table/src/symtable.h
+stddef.h
+-
+
 D:/Projects/C/Symbol-Table/src/test.c
 stdio.h
+-
+stdlib.h
 -
 
