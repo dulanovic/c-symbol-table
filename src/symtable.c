@@ -170,14 +170,18 @@ void smtb_print(SymTable symTable) {
     printf("No. of items: %i\n\n--- ITEMS ---\n\n", symTable->length);
     struct Node *current = (struct Node *) symTable->first;
     int i = 1;
-    while (1) {
+    for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
+        printf("-Item #%i-\n\t  KEY ---> %s\n\tVALUE ---> %.8f\n\n", i, current->key, *(double *) current->value);
+        i++;
+    }
+    /* while (1) {
         if (current == NULL) {
             break;
         }
         printf("-Item #%i-\n\t  KEY ---> %s\n\tVALUE ---> %.8f\n\n", i, current->key, *(double *) current->value);
         i++;
         current = current->next;
-    }
+    } */
     printf("\n<<<--------- SYMBOL TABLE --------->>>\n\n");
 }
 
