@@ -34,6 +34,7 @@ void smtb_free(SymTable symTable) {
         temp = current->next;
         free((void *) current->key);
         free((void *) current->value);
+        free(current);
         current = temp;
     }
     free(symTable);
@@ -92,7 +93,6 @@ void *smtb_replace(SymTable symTable, const char *key, const void *value) {
         if (strcmp(current->key, key) == 0) {
             const void *oldValue = current->value;
             current->value = value;
-            current->value = NULL;
             return (void *) oldValue;
         }
     }
@@ -107,7 +107,7 @@ int smtb_contains(SymTable symTable, const char *key) {
     }
     struct Node *current;
     for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
-        if (*current->key == *key) {
+        if (strcmp(current->key, key) == 0) {
             return 1;
         }
     }
@@ -122,7 +122,7 @@ void *smtb_get(SymTable symTable, const char *key) {
     }
     struct Node *current;
     for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
-        if (*current->key == *key) {
+        if (strcmp(current->key, key) == 0) {
             return (void *) current->value;
         }
     }
@@ -135,16 +135,24 @@ void *smtb_remove(SymTable symTable, const char *key) {
     if (smtb_getLength(symTable) == 0) {
         return NULL;
     }
-    struct Node *current;
-    struct Node *prev;
-    for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
-        if (*current->key == *key) {
-            void *oldValue = (void *) current->value;
-            if (prev == NULL) {
-                symTable->first = NULL;
-            } else {
-                prev->next = current->next;
-            }
+    void *oldValue;
+    struct Node *current = (struct Node *) symTable->first;
+    if (strcmp(current->key, key) == 0) {
+        oldValue = (void *) current->value;
+        symTable->first = current->next;
+        symTable->length--;
+        free((void *) current->key);
+        free(current);
+        return oldValue;
+    }
+    current = current->next;
+    struct Node *prev = current;
+    for (; current != NULL; current = current->next) {
+        if (strcmp(current->key, key) == 0) {
+            oldValue = (void *) current->value;
+            prev->next = current->next;
+            free((void *) current->key);
+            free(current);
             symTable->length--;
             return oldValue;
         }
@@ -167,21 +175,23 @@ void smtb_map(SymTable symTable, void (*func)(const char *key, void *value, void
 }
 
 void smtb_print(SymTable symTable) {
-    printf("\n<<<--------- SYMBOL TABLE --------->>>\n\n");
+    printf("\n<<<--------- { SYMBOL TABLE --------->>>\n\n");
     printf("No. of items: %i\n\n--- ITEMS ---\n\n", (int) smtb_getLength(symTable));
-    struct Node *current = (struct Node *) symTable->first;
+    struct Node *current;
     int i = 1;
     for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
-        printf("-Item #%i-\n\t  KEY ---> %s\n\tVALUE ---> %.8f\n\n", i, current->key, *(double *) current->value);
+        printf("Item #%i ---> (%s -> %.8f)\n", i, current->key, *(double *) current->value);
         i++;
     }
-    printf("\n<<<--------- SYMBOL TABLE --------->>>\n\n");
+    printf("\n<<<--------- SYMBOL TABLE } --------->>>\n\n");
 }
 
 int main(int argc, char **argv) {
 
     int num;
-    FILE *file = fopen("./_data.txt", "r");
+    void *ptrElem;
+    const char *criteria;
+    FILE *file = fopen("../_data.txt", "r");
     size_t arrayLength, maxWordLength;
     fscanf(file, "%i, %i\n", &arrayLength, &maxWordLength);
     SymTable smtb = smtb_new();
@@ -210,16 +220,107 @@ int main(int argc, char **argv) {
         smtb_put(smtb, ptrKey, (void *) ptrValue);
     }
     fclose(file);
-    smtb_print(smtb);
 
-    double d1 = 1.0;
-    void *ptr = smtb_replace(smtb, "vmnsdfkjwe", &d1);
-    if (ptr == NULL) {
-        printf("FAILURE!!!\n");
-        return(EXIT_FAILURE);
+    criteria = "wprvxmbftj";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
     }
-    printf("ptr ---> %.8f\n", *(double *) ptr);
-    // smtb_print(smtb);
+
+    criteria = "chctpccwhq";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    criteria = "tgmhopsexx";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    criteria = "yuaznzqsbr";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    criteria = "jvwqwxvfdq";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    criteria = "fduqzqecmb";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    printf("\n\n\n<<<----------------------------------------------->>>\n\n\n");
+
+    criteria = "asjdgas";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    criteria = "zwvbanrerr";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    criteria = "hgmtkexgbi";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    criteria = "nydfhnulfa";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
+
+    criteria = "asrtdu";
+    ptrElem = smtb_remove(smtb, criteria);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
+        smtb_print(smtb);
+    }
 
     smtb_free(smtb);
 
