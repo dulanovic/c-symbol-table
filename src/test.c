@@ -6,40 +6,46 @@
 static void smtb_test_replace(SymTable symTable, const char *key, double newValue) {
     double *ptrNewValue = &newValue;
     void *ptrElem = smtb_replace(symTable, key, ptrNewValue);
+    printf("\nTESTING smtb_replace():\n");
     if (ptrElem == NULL) {
-        printf("Element not found!!!\n\n\n");
+        printf("\tElement not found!!!\n\n");
     } else {
-        printf("         Passed key ---> %s\nReturned (old)value ---> %.8f\n\n", key, *(double *) ptrElem);
+        printf("\t         Passed key ---> %s\n\tReturned (old)value ---> %.8f\n\n", key, *(double *) ptrElem);
         smtb_print(symTable);
     }
+    printf("\n\n\n");
 }
 
 static void smtb_test_contains(SymTable symTable, const char *key) {
     int num = smtb_contains(symTable, key);
+    printf("\nTESTING smtb_contains():\n");
     if (num == 0) {
-        printf("Element not found!!!\n\n\n");
+        printf("\tElement not found!!!\n\n\n");
     } else {
-        printf("Element under provided key exists in symbol table.\n\n\n");
+        printf("\tElement under provided key exists in symbol table.\n\n\n");
     }
 }
 
 static void smtb_test_get(SymTable symTable, const char *key) {
     void *ptrElem = smtb_get(symTable, key);
+    printf("\nTESTING smtb_get():\n");
     if (ptrElem == NULL) {
         printf("Element not found!!!\n\n\n");
     } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", key, *(double *) ptrElem);
+        printf("    Passed key ---> %s\n\tReturned value ---> %.8f\n\n\n", key, *(double *) ptrElem);
     }
 }
 
 static void smtb_test_remove(SymTable symTable, const char *key) {
     void *ptrElem = smtb_remove(symTable, key);
+    printf("\nTESTING smtb_remove():\n");
     if (ptrElem == NULL) {
-        printf("Element not found!!!\n\n\n");
+        printf("\tElement not found!!!\n\n\n");
     } else {
-        printf("         Passed key ---> %s\nReturned (old)value ---> %.8f\n\n", key, *(double *) ptrElem);
+        printf("\t         Passed key ---> %s\n\tReturned (old)value ---> %.8f\n\n", key, *(double *) ptrElem);
         smtb_print(symTable);
     }
+    printf("\n\n");
 }
 
 int main(int argc, char **argv) {
@@ -47,7 +53,7 @@ int main(int argc, char **argv) {
     int num;
     void *ptrElem;
     const char *criteria;
-    FILE *file = fopen("./_data.txt", "r");
+    FILE *file = fopen("../_data.txt", "r");
     size_t arrayLength, maxWordLength;
     fscanf(file, "%i, %i\n", &arrayLength, &maxWordLength);
     SymTable smtb = smtb_new();
@@ -81,7 +87,7 @@ int main(int argc, char **argv) {
 
     smtb_print(smtb);
 
-    smtb_test_remove(smtb, "aiojhyuemo");
+    //
 
     smtb_free(smtb);
 
