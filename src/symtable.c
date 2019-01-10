@@ -33,7 +33,6 @@ void smtb_free(SymTable symTable) {
     for (current = (struct Node *) symTable->first; current != NULL;) {
         temp = current->next;
         free((void *) current->key);
-        free((void *) current->value);
         free(current);
         current = temp;
     }
@@ -49,13 +48,16 @@ int smtb_put(SymTable symTable, const char *key, const void *value) {
     assert(symTable != NULL);
     assert(key != NULL);
     assert(value != NULL);
+    char *ptrKey;    
     struct Node *current = (struct Node *) symTable->first;
     if (current == NULL) {
         current = (struct Node *) malloc(sizeof(struct Node));
         if (current == NULL) {
             return 0;
         }
-        current->key = key;
+        ptrKey = (char *) malloc((strlen(key) + 1) * sizeof(char));
+        strcpy(ptrKey, key);
+        current->key = ptrKey;
         current->value = value;
         current->next = NULL;
         symTable->first = current;
@@ -74,7 +76,9 @@ int smtb_put(SymTable symTable, const char *key, const void *value) {
         return 0;
     }
     prev->next = current;
-    current->key = key;
+    ptrKey = (char *) malloc((strlen(key) + 1) * sizeof(char));
+    strcpy(ptrKey, key);
+    current->key = ptrKey;
     current->value = value;
     current->next = NULL;
     symTable->length++;
@@ -145,8 +149,8 @@ void *smtb_remove(SymTable symTable, const char *key) {
         free(current);
         return oldValue;
     }
-    current = current->next;
     struct Node *prev = current;
+    current = current->next;
     for (; current != NULL; current = current->next) {
         if (strcmp(current->key, key) == 0) {
             oldValue = (void *) current->value;
@@ -180,7 +184,7 @@ void smtb_print(SymTable symTable) {
     struct Node *current;
     int i = 1;
     for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
-        printf("Item #%i ---> (%s -> %.8f)\n", i, current->key, *(double *) current->value);
+        printf("Item #%i --->\t(%s -> %.8f)\n", i, current->key, *(double *) current->value);
         i++;
     }
     printf("\n<<<--------- SYMBOL TABLE } --------->>>\n\n");
