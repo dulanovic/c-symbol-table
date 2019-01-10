@@ -3,12 +3,51 @@
 #include <stdlib.h>
 #include "symtable.h"
 
+static void smtb_test_replace(SymTable symTable, const char *key, double newValue) {
+    double *ptrNewValue = &newValue;
+    void *ptrElem = smtb_replace(symTable, key, ptrNewValue);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n\n\n");
+    } else {
+        printf("         Passed key ---> %s\nReturned (old)value ---> %.8f\n\n", key, *(double *) ptrElem);
+        smtb_print(symTable);
+    }
+}
+
+static void smtb_test_contains(SymTable symTable, const char *key) {
+    int num = smtb_contains(symTable, key);
+    if (num == 0) {
+        printf("Element not found!!!\n\n\n");
+    } else {
+        printf("Element under provided key exists in symbol table.\n\n\n");
+    }
+}
+
+static void smtb_test_get(SymTable symTable, const char *key) {
+    void *ptrElem = smtb_get(symTable, key);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n\n\n");
+    } else {
+        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", key, *(double *) ptrElem);
+    }
+}
+
+static void smtb_test_remove(SymTable symTable, const char *key) {
+    void *ptrElem = smtb_remove(symTable, key);
+    if (ptrElem == NULL) {
+        printf("Element not found!!!\n\n\n");
+    } else {
+        printf("         Passed key ---> %s\nReturned (old)value ---> %.8f\n\n", key, *(double *) ptrElem);
+        smtb_print(symTable);
+    }
+}
+
 int main(int argc, char **argv) {
 
     int num;
     void *ptrElem;
     const char *criteria;
-    FILE *file = fopen("../_data.txt", "r");
+    FILE *file = fopen("./_data.txt", "r");
     size_t arrayLength, maxWordLength;
     fscanf(file, "%i, %i\n", &arrayLength, &maxWordLength);
     SymTable smtb = smtb_new();
@@ -16,9 +55,10 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Memory issues [array]...\n");
         exit(EXIT_FAILURE);
     }
+    char *ptrKey;
     while (1) {
-        char *ptrKey = (char *) malloc((maxWordLength + 1) * sizeof(char));
-        double *ptrValue = (double *) malloc(sizeof(double));
+        ptrKey = (char *) malloc((maxWordLength + 1) * sizeof (char));
+        double *ptrValue = (double *) malloc(sizeof (double));
         if (ptrKey == NULL) {
             fprintf(stderr, "Memory issues [ptrKey]...\n");
             exit(EXIT_FAILURE);
@@ -37,110 +77,14 @@ int main(int argc, char **argv) {
         smtb_put(smtb, ptrKey, (void *) ptrValue);
     }
     fclose(file);
+    free(ptrKey);
 
-    criteria = "wprvxmbftj";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
+    smtb_print(smtb);
 
-    criteria = "chctpccwhq";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    criteria = "tgmhopsexx";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    criteria = "yuaznzqsbr";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    criteria = "jvwqwxvfdq";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    criteria = "fduqzqecmb";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    printf("\n\n\n<<<----------------------------------------------->>>\n\n\n");
-
-    criteria = "asjdgas";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    criteria = "zwvbanrerr";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    criteria = "hgmtkexgbi";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    criteria = "nydfhnulfa";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
-
-    criteria = "asrtdu";
-    ptrElem = smtb_remove(smtb, criteria);
-    if (ptrElem == NULL) {
-        printf("Element not found!!!\n");
-    } else {
-        printf("    Passed key ---> %s\nReturned value ---> %.8f\n\n", criteria, *(double *) ptrElem);
-        smtb_print(smtb);
-    }
+    smtb_test_remove(smtb, "aiojhyuemo");
 
     smtb_free(smtb);
 
-    return(EXIT_SUCCESS);
+    return (EXIT_SUCCESS);
 
 }
