@@ -1,5 +1,5 @@
 
-#include <stdio.h>
+/* #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -56,6 +56,9 @@ int smtb_put(SymTable symTable, const char *key, const void *value) {
             return 0;
         }
         ptrKey = (char *) malloc((strlen(key) + 1) * sizeof(char));
+        if (ptrKey == NULL) {
+            return 0;
+        }
         strcpy(ptrKey, key);
         current->key = ptrKey;
         current->value = value;
@@ -95,7 +98,7 @@ void *smtb_replace(SymTable symTable, const char *key, const void *value) {
     struct Node *current;
     for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
         if (strcmp(current->key, key) == 0) {
-            const void *oldValue = current->value;
+            void *oldValue = current->value;
             current->value = value;
             return (void *) oldValue;
         }
@@ -189,3 +192,4 @@ void smtb_print(SymTable symTable) {
     }
     printf("\n<<<--------- SYMBOL TABLE } --------->>>\n\n");
 }
+ */

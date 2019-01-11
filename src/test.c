@@ -48,7 +48,7 @@ static void smtb_test_remove(SymTable symTable, const char *key) {
     printf("\n\n");
 }
 
-int main(int argc, char **argv) {
+/* int main(int argc, char **argv) {
 
     int num;
     void *ptrElem;
@@ -93,4 +93,4 @@ int main(int argc, char **argv) {
 
     return (EXIT_SUCCESS);
 
-}
+} */
