@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "symtable.h"
+// #include "symtable.h"
 
 static size_t BUCKETCOUNT_EXPANSION[] = {59, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
 
@@ -12,6 +12,8 @@ struct SymbolTable {
     size_t length;
     size_t bucketCount;
 };
+
+typedef struct SymbolTable *SymTable;
 
 struct Binding {
     const char *key;
@@ -37,11 +39,11 @@ void smtb_print_addresses(SymTable symTable) {
 }
 
 SymTable smtb_new(void) {
-    SymTable symTable = (struct SymbolTable *) malloc(sizeof(struct SymbolTable));
+    SymTable symTable = (struct SymbolTable *) malloc(sizeof (struct SymbolTable));
     if (symTable == NULL) {
         return NULL;
     }
-    symTable->bindings = (const void **) calloc(BUCKETCOUNT_EXPANSION[0], sizeof(void *));
+    symTable->bindings = (const void **) calloc(BUCKETCOUNT_EXPANSION[0], sizeof (void *));
     if (symTable->bindings == NULL) {
         return NULL;
     }
@@ -78,20 +80,20 @@ int smtb_put(SymTable symTable, const char *key, const void *value) {
     char *ptrKey;
     printf("1\n");
     size_t hash = smtb_hash(key, symTable->bucketCount);
-    printf("2 ---> %i\n", hash);
+    printf("2 ---> %i\n", (int) hash);
     printf("2.5 ---> %u\n", (unsigned int) (symTable->bindings[hash]));
     struct Binding *current = (struct Binding *) symTable->bindings[hash];
     printf("CURRENT ---> %s\n", (current == NULL) ? "NULL" : "NOT NULL");
     printf("3\n");
     if (current == NULL) {
         printf("4\n");
-        current = (struct Binding *) malloc(sizeof(struct Binding));
+        current = (struct Binding *) malloc(sizeof (struct Binding));
         printf("5\n");
         if (current == NULL) {
             return 0;
         }
         printf("6\n");
-        ptrKey = (char *) malloc(sizeof(strlen(key) + 1));
+        ptrKey = (char *) malloc(sizeof (strlen(key) + 1));
         printf("7\n");
         if (ptrKey == NULL) {
             return 0;
@@ -118,12 +120,12 @@ int smtb_put(SymTable symTable, const char *key, const void *value) {
         }
         prev = current;
     }
-    ptrKey = (char *) malloc(sizeof(strlen(key) + 1));
+    ptrKey = (char *) malloc(sizeof (strlen(key) + 1));
     if (ptrKey == NULL) {
         return 0;
     }
     strcpy(ptrKey, key);
-    current = (struct Binding *) malloc(sizeof(struct Binding));
+    current = (struct Binding *) malloc(sizeof (struct Binding));
     if (current == NULL) {
         return 0;
     }
@@ -244,14 +246,26 @@ void smtb_print_detail(SymTable symTable) {
 
 int main(int argc, char **argv) {
 
-    printf("HASH ---> %i\n", (int) smtb_hash("tgmhopsexx", 59));
-
     int errorCheck;
     void *ptrElem;
     const char *criteria;
-    FILE *file = fopen("../_data.txt", "r");
+    // FILE *file = fopen("./_data.txt", "r");
     size_t arrayLength, maxWordLength;
-    fscanf(file, "%i, %i\n", &arrayLength, &maxWordLength);
+    errorCheck = scanf(" %d", &arrayLength);
+    if (errorCheck != 1) {
+        fprintf(stderr, "Wrong input!...\n");
+        exit(EXIT_FAILURE);
+    }
+    errorCheck = scanf(" %d", &maxWordLength);
+    if (errorCheck != 1) {
+        fprintf(stderr, "Wrong input!...\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("PROSLO!!!\n");
+    if (errorCheck <= 0) {
+        fprintf(stderr, "Wrong input!...\n");
+        exit(EXIT_FAILURE);
+    }
     SymTable smtb = smtb_new();
     if (smtb == NULL) {
         fprintf(stderr, "Memory issues [array]...\n");
@@ -281,10 +295,10 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         } */
         printf("main - 5\n");
-        errorCheck = fscanf(file, " %s\t%lf\n", ptrKey, &doubleVal);
+        errorCheck = scanf(" %s\t%lf\n", ptrKey, &doubleVal);
         printf("main - 6\n");
-        if (errorCheck == 0) {
-            fprintf(stderr, "Wrong ipnut!...\n");
+        if (errorCheck <= 0) {
+            fprintf(stderr, "Wrong input!...\n");
             exit(EXIT_FAILURE);
         }
         printf("main - 7\n");
@@ -300,13 +314,13 @@ int main(int argc, char **argv) {
         }
         printf("main - 10\n");
         smtb_print_detail(smtb);
-        free(ptrKey);
+        // free(ptrKey);
     }
-    fclose(file);
+    // fclose(file);
     smtb_print(smtb);
 
     smtb_free(smtb);
 
-    return(EXIT_SUCCESS);
+    return (EXIT_SUCCESS);
 
 }
