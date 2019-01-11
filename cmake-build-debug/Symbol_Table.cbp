@@ -76,10 +76,13 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="D:/Projects/C/Symbol-Table/src/symtable.c">
+		<Unit filename="D:/Projects/C/Symbol-Table/src/symtable.h">
 			<Option target="Symbol_Table"/>
 		</Unit>
-		<Unit filename="D:/Projects/C/Symbol-Table/src/symtable.h">
+		<Unit filename="D:/Projects/C/Symbol-Table/src/symtablehash.c">
+			<Option target="Symbol_Table"/>
+		</Unit>
+		<Unit filename="D:/Projects/C/Symbol-Table/src/symtablelist.c">
 			<Option target="Symbol_Table"/>
 		</Unit>
 		<Unit filename="D:/Projects/C/Symbol-Table/src/test.c">

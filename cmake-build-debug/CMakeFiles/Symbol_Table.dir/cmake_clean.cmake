@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj"
   "CMakeFiles/Symbol_Table.dir/src/test.c.obj"
-  "CMakeFiles/Symbol_Table.dir/src/symtable.c.obj"
+  "CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj"
   "Symbol_Table.pdb"
   "Symbol_Table.exe"
   "Symbol_Table.exe.manifest"

@@ -6,7 +6,11 @@
 
 #IncludeRegexTransform: 
 
-D:/Projects/C/Symbol-Table/src/symtable.c
+D:/Projects/C/Symbol-Table/src/symtable.h
+stddef.h
+-
+
+D:/Projects/C/Symbol-Table/src/symtablehash.c
 stdio.h
 -
 stdlib.h
@@ -18,13 +22,21 @@ assert.h
 symtable.h
 D:/Projects/C/Symbol-Table/src/symtable.h
 
-D:/Projects/C/Symbol-Table/src/symtable.h
-stddef.h
+D:/Projects/C/Symbol-Table/src/symtablelist.c
+stdlib.h
 -
+string.h
+-
+assert.h
+-
+symtable.h
+D:/Projects/C/Symbol-Table/src/symtable.h
 
 D:/Projects/C/Symbol-Table/src/test.c
 stdio.h
 -
 stdlib.h
 -
+symtable.h
+D:/Projects/C/Symbol-Table/src/symtable.h
 

@@ -56,9 +56,33 @@ include CMakeFiles/Symbol_Table.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Symbol_Table.dir/flags.make
 
+CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj: CMakeFiles/Symbol_Table.dir/flags.make
+CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj: ../src/symtablehash.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Projects\C\Symbol-Table\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\Symbol_Table.dir\src\symtablehash.c.obj   -c D:\Projects\C\Symbol-Table\src\symtablehash.c
+
+CMakeFiles/Symbol_Table.dir/src/symtablehash.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Symbol_Table.dir/src/symtablehash.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Projects\C\Symbol-Table\src\symtablehash.c > CMakeFiles\Symbol_Table.dir\src\symtablehash.c.i
+
+CMakeFiles/Symbol_Table.dir/src/symtablehash.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Symbol_Table.dir/src/symtablehash.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Projects\C\Symbol-Table\src\symtablehash.c -o CMakeFiles\Symbol_Table.dir\src\symtablehash.c.s
+
+CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj.requires:
+
+.PHONY : CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj.requires
+
+CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj.provides: CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj.requires
+	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj.provides.build
+.PHONY : CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj.provides
+
+CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj.provides.build: CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj
+
+
 CMakeFiles/Symbol_Table.dir/src/test.c.obj: CMakeFiles/Symbol_Table.dir/flags.make
 CMakeFiles/Symbol_Table.dir/src/test.c.obj: ../src/test.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Projects\C\Symbol-Table\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/Symbol_Table.dir/src/test.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Projects\C\Symbol-Table\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/Symbol_Table.dir/src/test.c.obj"
 	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\Symbol_Table.dir\src\test.c.obj   -c D:\Projects\C\Symbol-Table\src\test.c
 
 CMakeFiles/Symbol_Table.dir/src/test.c.i: cmake_force
@@ -80,45 +104,47 @@ CMakeFiles/Symbol_Table.dir/src/test.c.obj.provides: CMakeFiles/Symbol_Table.dir
 CMakeFiles/Symbol_Table.dir/src/test.c.obj.provides.build: CMakeFiles/Symbol_Table.dir/src/test.c.obj
 
 
-CMakeFiles/Symbol_Table.dir/src/symtable.c.obj: CMakeFiles/Symbol_Table.dir/flags.make
-CMakeFiles/Symbol_Table.dir/src/symtable.c.obj: ../src/symtable.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Projects\C\Symbol-Table\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/Symbol_Table.dir/src/symtable.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\Symbol_Table.dir\src\symtable.c.obj   -c D:\Projects\C\Symbol-Table\src\symtable.c
+CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj: CMakeFiles/Symbol_Table.dir/flags.make
+CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj: ../src/symtablelist.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Projects\C\Symbol-Table\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\Symbol_Table.dir\src\symtablelist.c.obj   -c D:\Projects\C\Symbol-Table\src\symtablelist.c
 
-CMakeFiles/Symbol_Table.dir/src/symtable.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Symbol_Table.dir/src/symtable.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Projects\C\Symbol-Table\src\symtable.c > CMakeFiles\Symbol_Table.dir\src\symtable.c.i
+CMakeFiles/Symbol_Table.dir/src/symtablelist.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Symbol_Table.dir/src/symtablelist.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Projects\C\Symbol-Table\src\symtablelist.c > CMakeFiles\Symbol_Table.dir\src\symtablelist.c.i
 
-CMakeFiles/Symbol_Table.dir/src/symtable.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Symbol_Table.dir/src/symtable.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Projects\C\Symbol-Table\src\symtable.c -o CMakeFiles\Symbol_Table.dir\src\symtable.c.s
+CMakeFiles/Symbol_Table.dir/src/symtablelist.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Symbol_Table.dir/src/symtablelist.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Projects\C\Symbol-Table\src\symtablelist.c -o CMakeFiles\Symbol_Table.dir\src\symtablelist.c.s
 
-CMakeFiles/Symbol_Table.dir/src/symtable.c.obj.requires:
+CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj.requires:
 
-.PHONY : CMakeFiles/Symbol_Table.dir/src/symtable.c.obj.requires
+.PHONY : CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj.requires
 
-CMakeFiles/Symbol_Table.dir/src/symtable.c.obj.provides: CMakeFiles/Symbol_Table.dir/src/symtable.c.obj.requires
-	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtable.c.obj.provides.build
-.PHONY : CMakeFiles/Symbol_Table.dir/src/symtable.c.obj.provides
+CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj.provides: CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj.requires
+	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj.provides.build
+.PHONY : CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj.provides
 
-CMakeFiles/Symbol_Table.dir/src/symtable.c.obj.provides.build: CMakeFiles/Symbol_Table.dir/src/symtable.c.obj
+CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj.provides.build: CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj
 
 
 # Object files for target Symbol_Table
 Symbol_Table_OBJECTS = \
+"CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj" \
 "CMakeFiles/Symbol_Table.dir/src/test.c.obj" \
-"CMakeFiles/Symbol_Table.dir/src/symtable.c.obj"
+"CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj"
 
 # External object files for target Symbol_Table
 Symbol_Table_EXTERNAL_OBJECTS =
 
+Symbol_Table.exe: CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj
 Symbol_Table.exe: CMakeFiles/Symbol_Table.dir/src/test.c.obj
-Symbol_Table.exe: CMakeFiles/Symbol_Table.dir/src/symtable.c.obj
+Symbol_Table.exe: CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj
 Symbol_Table.exe: CMakeFiles/Symbol_Table.dir/build.make
 Symbol_Table.exe: CMakeFiles/Symbol_Table.dir/linklibs.rsp
 Symbol_Table.exe: CMakeFiles/Symbol_Table.dir/objects1.rsp
 Symbol_Table.exe: CMakeFiles/Symbol_Table.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Projects\C\Symbol-Table\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable Symbol_Table.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Projects\C\Symbol-Table\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable Symbol_Table.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\Symbol_Table.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -126,8 +152,9 @@ CMakeFiles/Symbol_Table.dir/build: Symbol_Table.exe
 
 .PHONY : CMakeFiles/Symbol_Table.dir/build
 
+CMakeFiles/Symbol_Table.dir/requires: CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj.requires
 CMakeFiles/Symbol_Table.dir/requires: CMakeFiles/Symbol_Table.dir/src/test.c.obj.requires
-CMakeFiles/Symbol_Table.dir/requires: CMakeFiles/Symbol_Table.dir/src/symtable.c.obj.requires
+CMakeFiles/Symbol_Table.dir/requires: CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj.requires
 
 .PHONY : CMakeFiles/Symbol_Table.dir/requires
 

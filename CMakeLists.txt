@@ -3,4 +3,4 @@ project(Symbol_Table C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Symbol_Table src/test.c src/symtable.h src/symtable.c)
+add_executable(Symbol_Table src/symtablehash.c src/test.c src/symtablelist.c src/symtable.h)

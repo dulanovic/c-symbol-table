@@ -122,32 +122,59 @@ Symbol_Table/fast:
 	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/build
 .PHONY : Symbol_Table/fast
 
-src/symtable.obj: src/symtable.c.obj
+src/symtablehash.obj: src/symtablehash.c.obj
 
-.PHONY : src/symtable.obj
+.PHONY : src/symtablehash.obj
 
 # target to build an object file
-src/symtable.c.obj:
-	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtable.c.obj
-.PHONY : src/symtable.c.obj
+src/symtablehash.c.obj:
+	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj
+.PHONY : src/symtablehash.c.obj
 
-src/symtable.i: src/symtable.c.i
+src/symtablehash.i: src/symtablehash.c.i
 
-.PHONY : src/symtable.i
+.PHONY : src/symtablehash.i
 
 # target to preprocess a source file
-src/symtable.c.i:
-	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtable.c.i
-.PHONY : src/symtable.c.i
+src/symtablehash.c.i:
+	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtablehash.c.i
+.PHONY : src/symtablehash.c.i
 
-src/symtable.s: src/symtable.c.s
+src/symtablehash.s: src/symtablehash.c.s
 
-.PHONY : src/symtable.s
+.PHONY : src/symtablehash.s
 
 # target to generate assembly for a file
-src/symtable.c.s:
-	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtable.c.s
-.PHONY : src/symtable.c.s
+src/symtablehash.c.s:
+	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtablehash.c.s
+.PHONY : src/symtablehash.c.s
+
+src/symtablelist.obj: src/symtablelist.c.obj
+
+.PHONY : src/symtablelist.obj
+
+# target to build an object file
+src/symtablelist.c.obj:
+	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj
+.PHONY : src/symtablelist.c.obj
+
+src/symtablelist.i: src/symtablelist.c.i
+
+.PHONY : src/symtablelist.i
+
+# target to preprocess a source file
+src/symtablelist.c.i:
+	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtablelist.c.i
+.PHONY : src/symtablelist.c.i
+
+src/symtablelist.s: src/symtablelist.c.s
+
+.PHONY : src/symtablelist.s
+
+# target to generate assembly for a file
+src/symtablelist.c.s:
+	$(MAKE) -f CMakeFiles\Symbol_Table.dir\build.make CMakeFiles/Symbol_Table.dir/src/symtablelist.c.s
+.PHONY : src/symtablelist.c.s
 
 src/test.obj: src/test.c.obj
 
@@ -185,9 +212,12 @@ help:
 	@echo ... Symbol_Table
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... src/symtable.obj
-	@echo ... src/symtable.i
-	@echo ... src/symtable.s
+	@echo ... src/symtablehash.obj
+	@echo ... src/symtablehash.i
+	@echo ... src/symtablehash.s
+	@echo ... src/symtablelist.obj
+	@echo ... src/symtablelist.i
+	@echo ... src/symtablelist.s
 	@echo ... src/test.obj
 	@echo ... src/test.i
 	@echo ... src/test.s

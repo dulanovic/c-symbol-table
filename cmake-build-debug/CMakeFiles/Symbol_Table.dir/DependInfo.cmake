@@ -4,7 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "D:/Projects/C/Symbol-Table/src/symtable.c" "D:/Projects/C/Symbol-Table/cmake-build-debug/CMakeFiles/Symbol_Table.dir/src/symtable.c.obj"
+  "D:/Projects/C/Symbol-Table/src/symtablehash.c" "D:/Projects/C/Symbol-Table/cmake-build-debug/CMakeFiles/Symbol_Table.dir/src/symtablehash.c.obj"
+  "D:/Projects/C/Symbol-Table/src/symtablelist.c" "D:/Projects/C/Symbol-Table/cmake-build-debug/CMakeFiles/Symbol_Table.dir/src/symtablelist.c.obj"
   "D:/Projects/C/Symbol-Table/src/test.c" "D:/Projects/C/Symbol-Table/cmake-build-debug/CMakeFiles/Symbol_Table.dir/src/test.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
