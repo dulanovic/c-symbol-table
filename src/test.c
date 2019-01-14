@@ -48,14 +48,14 @@ static void smtb_test_remove(SymTable symTable, const char *key) {
     printf("\n\n");
 }
 
-/* int main(int argc, char **argv) {
+int main(int argc, char **argv) {
 
-    int num;
+    int errorCheck, num;
     void *ptrElem;
     const char *criteria;
     FILE *file = fopen("../_data.txt", "r");
     size_t arrayLength, maxWordLength;
-    fscanf(file, "%i, %i\n", &arrayLength, &maxWordLength);
+    fscanf(file, " %i, %i\n", &arrayLength, &maxWordLength);
     SymTable smtb = smtb_new();
     if (smtb == NULL) {
         fprintf(stderr, "Memory issues [array]...\n");
@@ -64,33 +64,36 @@ static void smtb_test_remove(SymTable symTable, const char *key) {
     char *ptrKey;
     while (1) {
         ptrKey = (char *) malloc((maxWordLength + 1) * sizeof (char));
-        double *ptrValue = (double *) malloc(sizeof (double));
         if (ptrKey == NULL) {
             fprintf(stderr, "Memory issues [ptrKey]...\n");
             exit(EXIT_FAILURE);
         }
+        double *ptrValue = (double *) malloc(sizeof (double));
         if (ptrValue == NULL) {
             fprintf(stderr, "Memory issues [ptrValue]...\n");
             exit(EXIT_FAILURE);
         }
-        num = fscanf(file, " %s\t%lf\n", ptrKey, ptrValue);
-        if (num == 0) {
+        errorCheck = fscanf(file, " %s\t%lf\n", ptrKey, ptrValue);
+        if (errorCheck == 0) {
+            fprintf(stderr, "Wrong input!...\n");
+            exit(EXIT_FAILURE);
+        }
+        if (errorCheck == EOF) {
             break;
         }
-        if (num == EOF) {
+        errorCheck = smtb_put(smtb, ptrKey, ptrValue);
+        if (errorCheck == 0) {
+            printf("\n\n<--------- smtb_put() returned 0! --------->\n\n");
             break;
         }
-        smtb_put(smtb, ptrKey, (void *) ptrValue);
+        free(ptrKey);
     }
     fclose(file);
-    free(ptrKey);
 
     smtb_print(smtb);
-
-    //
 
     smtb_free(smtb);
 
     return (EXIT_SUCCESS);
 
-} */
+}

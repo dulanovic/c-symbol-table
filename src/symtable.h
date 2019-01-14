@@ -2,8 +2,6 @@
 #ifndef SYMBOL_TABLE_SYMTABLE_H
 #define SYMBOL_TABLE_SYMTABLE_H
 
-#include <stddef.h>
-
 typedef struct SymbolTable *SymTable;
 
 SymTable smtb_new(void);
