@@ -7,8 +7,6 @@
 #IncludeRegexTransform: 
 
 D:/Projects/C/Symbol-Table/src/symtable.h
-stddef.h
--
 
 D:/Projects/C/Symbol-Table/src/symtablehash.c
 stdio.h
