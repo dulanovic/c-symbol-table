@@ -5,7 +5,8 @@
 #include <assert.h>
 #include "symtable.h"
 
-static size_t BUCKETCOUNT_EXPANSION[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
+// static size_t BUCKETCOUNT_EXPANSION[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
+static size_t BUCKETCOUNT_EXPANSION[] = {5, 10, 20, 40, 81, 163, 327, 655};
 
 struct SymbolTable {
     const void **buckets;
@@ -59,6 +60,7 @@ static size_t smtb_count_empty_buckets(SymTable symTable) {
 
 void smtb_expand(SymTable symTable) {
     assert(symTable != NULL);
+    printf("\n\n<<< EXPANSION !!! >>>\n\n\n");
     if (symTable->expansionState == (sizeof(BUCKETCOUNT_EXPANSION) / sizeof(BUCKETCOUNT_EXPANSION[0]) - 1)) {
         return;
     }
@@ -67,6 +69,31 @@ void smtb_expand(SymTable symTable) {
         return;
     }
     symTable->buckets = temp;
+    // (symTable->expansionState)++;
+}
+
+void smtb_expand_2(SymTable symTable) {
+    assert(symTable != NULL);
+    if (symTable->expansionState == (sizeof (BUCKETCOUNT_EXPANSION) / sizeof (BUCKETCOUNT_EXPANSION[0]) - 1)) {
+        return;
+    }
+    const void **tempBuckets = symTable->buckets;
+    const void **temp = (const void **) calloc(BUCKETCOUNT_EXPANSION[symTable->expansionState + 1], sizeof(void *));
+    if (temp == NULL) {
+        return;
+    }
+    symTable->buckets = temp;
+    struct Binding *current;
+    char *key;
+    for (size_t i = 0; i < smtb_buckets_count(symTable); i++) {
+        current = (struct Binding *) tempBuckets[i];
+        for (; current != NULL; current = current->next) {
+            smtb_put(symTable, current->key, current->value);
+            free((void *) current->key);
+        }
+    }
+    free(tempBuckets);
+    // (symTable->expansionState)++;
 }
 
 SymTable smtb_new(void) {
@@ -109,7 +136,7 @@ int smtb_put(SymTable symTable, const char *key, const void *value) {
     assert(key != NULL);
     assert(value != NULL);
     if (symTable->length == BUCKETCOUNT_EXPANSION[symTable->expansionState]) {
-        smtb_expand(symTable);
+        smtb_expand_2(symTable);
     }
     char *ptrKey;
     size_t hash = smtb_hash(key, smtb_buckets_count(symTable));
@@ -266,4 +293,47 @@ void smtb_print_detail(SymTable symTable) {
         printf("\n");
     }
     printf("\n<<<--------- SYMBOL TABLE(detail) } --------->>>\n\n\n");
+}
+
+int main(int argc, char **argv) {
+
+    int errorCheck, num;
+    void *ptrElem;
+    const char *criteria;
+    size_t arrayLength, maxWordLength;
+    SymTable smtb = smtb_new();
+    if (smtb == NULL) {
+        fprintf(stderr, "Memory issues [array]...\n");
+        exit(EXIT_FAILURE);
+    }
+
+    double d1 = 0.00214578;
+    double d2 = 0.25754654;
+    double d3 = 0.85324651;
+    double d4 = 0.36422654;
+    double d5 = 0.10235017;
+    double d6 = 0.00112233;
+    double d7 = 0.23452489;
+    double d8 = 0.70026803;
+    double d9 = 0.12348742;
+    double d10 = 0.2010387;
+    double d11 = 0.99887766;
+
+    smtb_put(smtb, "Vidan", &d1);
+    smtb_put(smtb, "Ivan", &d2);
+    smtb_put(smtb, "Ljubisa", &d3);
+    smtb_put(smtb, "Ljiljana", &d4);
+    smtb_put(smtb, "Vidanos", &d5);
+    smtb_put(smtb, "<<< TEST_01 >>>", &d6);
+    smtb_put(smtb, "Vido", &d7);
+    smtb_put(smtb, "Ivanos", &d8);
+    smtb_put(smtb, "Ljubec", &d9);
+    smtb_put(smtb, "Ljisa", &d10);
+    smtb_put(smtb, "<<< TEST_02 >>>", &d11);
+    smtb_print_detail(smtb);
+
+    smtb_free(smtb);
+
+    return (EXIT_SUCCESS);
+
 }
