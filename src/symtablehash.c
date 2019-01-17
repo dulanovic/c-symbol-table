@@ -5,8 +5,8 @@
 #include <assert.h>
 #include "symtable.h"
 
-// static size_t BUCKETCOUNT_EXPANSION[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
-static size_t BUCKETCOUNT_EXPANSION[] = {5, 10, 20, 40, 81, 163, 327, 655};
+static size_t BUCKETCOUNT_EXPANSION[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
+// static size_t BUCKETCOUNT_EXPANSION[] = {5, 10, 20, 40, 8191, 16381, 32749, 65521};
 
 struct SymbolTable {
     const void **buckets;
@@ -29,17 +29,9 @@ static size_t smtb_hash(const char *key, size_t bucketCount) {
     return (hash % bucketCount);
 }
 
-static size_t smtb_buckets_count(SymTable symTable) {
+static size_t smtb_bucket_count(SymTable symTable) {
     assert(symTable != NULL);
     return BUCKETCOUNT_EXPANSION[symTable->expansionState];
-}
-
-static void smtb_print_addresses(SymTable symTable) {
-    printf("<<<--------- { SYMBOL TABLE ADDRESSES --------->>>\n\n");
-    for (size_t i = 0; i < smtb_buckets_count(symTable); i++) {
-        printf("BUCKET_ADDRESS[%i] ---> %u (== NULL ---> %s)\n", (int) i, (unsigned int) (symTable->buckets + i), (((struct Binding *) symTable->buckets[i]) == NULL) ? "NULL" : "NOT NULL");
-    }
-    printf("\n\n<<<--------- SYMBOL TABLE ADDRESSES } --------->>>\n\n");
 }
 
 static size_t smtb_count_empty_buckets(SymTable symTable) {
@@ -47,7 +39,7 @@ static size_t smtb_count_empty_buckets(SymTable symTable) {
     size_t empty = 0;
     size_t nonEmpty = 0;
     struct Binding *current;
-    for (size_t i = 0; i < smtb_buckets_count(symTable); i++) {
+    for (size_t i = 0; i < smtb_bucket_count(symTable); i++) {
         if (symTable->buckets[i] != NULL) {
             nonEmpty++;
         } else {
@@ -58,23 +50,16 @@ static size_t smtb_count_empty_buckets(SymTable symTable) {
     return nonEmpty;
 }
 
-void smtb_expand(SymTable symTable) {
+void smtb_move(SymTable symTable, const char *key) {
     assert(symTable != NULL);
-    printf("\n\n<<< EXPANSION !!! >>>\n\n\n");
-    if (symTable->expansionState == (sizeof(BUCKETCOUNT_EXPANSION) / sizeof(BUCKETCOUNT_EXPANSION[0]) - 1)) {
-        return;
-    }
-    const void **temp = (const void **) realloc(symTable->buckets, BUCKETCOUNT_EXPANSION[++symTable->expansionState] * sizeof(void *));
-    if (temp == NULL) {
-        return;
-    }
-    symTable->buckets = temp;
-    // (symTable->expansionState)++;
+    assert(key != NULL);
+    //
 }
 
-void smtb_expand_2(SymTable symTable) {
+void smtb_expand(SymTable symTable) {
     assert(symTable != NULL);
-    if (symTable->expansionState == (sizeof (BUCKETCOUNT_EXPANSION) / sizeof (BUCKETCOUNT_EXPANSION[0]) - 1)) {
+    printf("\n\n<<< EXPANSION !!! >>>\n");
+    if (symTable->expansionState == (sizeof(BUCKETCOUNT_EXPANSION) / sizeof(BUCKETCOUNT_EXPANSION[0]) - 1)) {
         return;
     }
     const void **tempBuckets = symTable->buckets;
@@ -83,25 +68,25 @@ void smtb_expand_2(SymTable symTable) {
         return;
     }
     symTable->buckets = temp;
+    symTable->expansionState++;
     struct Binding *current;
-    char *key;
-    for (size_t i = 0; i < smtb_buckets_count(symTable); i++) {
+    for (size_t i = 0; i < BUCKETCOUNT_EXPANSION[symTable->expansionState - 1]; i++) {
         current = (struct Binding *) tempBuckets[i];
         for (; current != NULL; current = current->next) {
             smtb_put(symTable, current->key, current->value);
+            symTable->length--;
             free((void *) current->key);
         }
     }
     free(tempBuckets);
-    // (symTable->expansionState)++;
 }
 
 SymTable smtb_new(void) {
-    SymTable symTable = (struct SymbolTable *) malloc(sizeof (struct SymbolTable));
+    SymTable symTable = (struct SymbolTable *) malloc(sizeof(struct SymbolTable));
     if (symTable == NULL) {
         return NULL;
     }
-    symTable->buckets = (const void **) calloc(BUCKETCOUNT_EXPANSION[0], sizeof (void *));
+    symTable->buckets = (const void **) calloc(BUCKETCOUNT_EXPANSION[0], sizeof(void *));
     if (symTable->buckets == NULL) {
         return NULL;
     }
@@ -113,7 +98,7 @@ SymTable smtb_new(void) {
 void smtb_free(SymTable symTable) {
     assert(symTable != NULL);
     struct Binding *current, *prev;
-    for (int i = 0; i < smtb_buckets_count(symTable); i++) {
+    for (int i = 0; i < smtb_bucket_count(symTable); i++) {
         current = (struct Binding *) symTable->buckets[i];
         prev = current;
         for (; current != NULL; current = prev) {
@@ -136,13 +121,13 @@ int smtb_put(SymTable symTable, const char *key, const void *value) {
     assert(key != NULL);
     assert(value != NULL);
     if (symTable->length == BUCKETCOUNT_EXPANSION[symTable->expansionState]) {
-        smtb_expand_2(symTable);
+        smtb_expand(symTable);
     }
     char *ptrKey;
-    size_t hash = smtb_hash(key, smtb_buckets_count(symTable));
+    size_t hash = smtb_hash(key, smtb_bucket_count(symTable));
     struct Binding *current = (struct Binding *) symTable->buckets[hash];
     if (current == NULL) {
-        current = (struct Binding *) malloc(sizeof (struct Binding));
+        current = (struct Binding *) malloc(sizeof(struct Binding));
         if (current == NULL) {
             return 0;
         }
@@ -170,7 +155,7 @@ int smtb_put(SymTable symTable, const char *key, const void *value) {
         return 0;
     }
     strcpy(ptrKey, key);
-    current = (struct Binding *) malloc(sizeof (struct Binding));
+    current = (struct Binding *) malloc(sizeof(struct Binding));
     if (current == NULL) {
         return 0;
     }
@@ -186,7 +171,7 @@ void *smtb_replace(SymTable symTable, const char *key, const void *value) {
     assert(symTable != NULL);
     assert(key != NULL);
     assert(value != NULL);
-    size_t hash = smtb_hash(key, smtb_buckets_count(symTable));
+    size_t hash = smtb_hash(key, smtb_bucket_count(symTable));
     struct Binding *current = (struct Binding *) symTable->buckets[hash];
     for (; current != NULL; current = current->next) {
         if (strcmp(current->key, key) == 0) {
@@ -201,7 +186,7 @@ void *smtb_replace(SymTable symTable, const char *key, const void *value) {
 int smtb_contains(SymTable symTable, const char *key) {
     assert(symTable != NULL);
     assert(key != NULL);
-    size_t hash = smtb_hash(key, smtb_buckets_count(symTable));
+    size_t hash = smtb_hash(key, smtb_bucket_count(symTable));
     struct Binding *current = (struct Binding *) symTable->buckets[hash];
     for (; current != NULL; current = current->next) {
         if (strcmp(current->key, key) == 0) {
@@ -214,7 +199,7 @@ int smtb_contains(SymTable symTable, const char *key) {
 void *smtb_get(SymTable symTable, const char *key) {
     assert(symTable != NULL);
     assert(key != NULL);
-    size_t hash = smtb_hash(key, smtb_buckets_count(symTable));
+    size_t hash = smtb_hash(key, smtb_bucket_count(symTable));
     struct Binding *current = (struct Binding *) symTable->buckets[hash];
     for (; current != NULL; current = current->next) {
         if (strcmp(current->key, key) == 0) {
@@ -227,19 +212,20 @@ void *smtb_get(SymTable symTable, const char *key) {
 void *smtb_remove(SymTable symTable, const char *key) {
     assert(symTable != NULL);
     assert(key != NULL);
-    size_t hash = smtb_hash(key, smtb_buckets_count(symTable));
+    size_t hash = smtb_hash(key, smtb_bucket_count(symTable));
     void *oldValue;
     struct Binding *current = (struct Binding *) symTable->buckets[hash];
-    if ((strcmp(current->key, key) == 0) && (current->next == NULL)) {
+    if ((strcmp(current->key, key) == 0)) {
         oldValue = (void *) current->value;
+        symTable->buckets[hash] = current->next;
+        symTable->length--;
         free((void *) current->key);
         free((void *) current);
-        symTable->buckets[hash] = NULL;
-        symTable->length--;
         return oldValue;
     }
     struct Binding *prev = current;
-    for (; current != NULL; current = current->next) {
+    current = current->next;
+    for (; current != NULL; prev = current, current = current->next) {
         if (strcmp(current->key, key) == 0) {
             oldValue = (void *) current->value;
             prev->next = current->next;
@@ -248,7 +234,6 @@ void *smtb_remove(SymTable symTable, const char *key) {
             symTable->length--;
             return oldValue;
         }
-        prev = current;
     }
     return NULL;
 }
@@ -257,7 +242,7 @@ void smtb_map(SymTable symTable, void (*func)(const char *key, void *value, void
     assert(symTable != NULL);
     assert(func != NULL);
     assert(extra != NULL);
-    for (size_t i = 0; i < smtb_buckets_count(symTable); i++) {
+    for (size_t i = 0; i < smtb_bucket_count(symTable); i++) {
         struct Binding *current = (struct Binding *) symTable->buckets[i];
         for (; current != NULL; current = current->next) {
             func(current->key, (void *) current->value, (void *) extra);
@@ -268,8 +253,8 @@ void smtb_map(SymTable symTable, void (*func)(const char *key, void *value, void
 void smtb_print(SymTable symTable) {
     assert(symTable != NULL);
     printf("\n<<<--------- { SYMBOL TABLE --------->>>\n\n");
-    for (size_t i = 0; i < smtb_buckets_count(symTable); i++) {
-        printf("<- BUCKET[%i] ->\n", (int) i);
+    for (size_t i = 0; i < smtb_bucket_count(symTable); i++) {
+        printf("<- BUCKET[%i] ->\n", (int) (i + 1));
         int j = 1;
         struct Binding *current = (struct Binding *) symTable->buckets[i];
         for (; current != NULL; current = current->next, j++) {
@@ -283,19 +268,22 @@ void smtb_print(SymTable symTable) {
 void smtb_print_detail(SymTable symTable) {
     assert(symTable != NULL);
     printf("\n<<<--------- { SYMBOL TABLE(detail) --------->>>\n\n");
-    for (size_t i = 0; i < smtb_buckets_count(symTable); i++) {
-        printf("<- BUCKET[%i] ->\n\tAddress ---> %u (%u)\n", (int) i, (unsigned int) (symTable->buckets + i), (unsigned int) symTable->buckets[i]);
+    for (size_t i = 0; i < smtb_bucket_count(symTable); i++) {
+        printf("<- BUCKET[%i] ->\n\tAddress ---> %u (%u)\n", (int) (i + 1), (unsigned int) (symTable->buckets + i),
+               (unsigned int) symTable->buckets[i]);
         int j = 1;
         struct Binding *current = (struct Binding *) symTable->buckets[i];
         for (; current != NULL; current = current->next, j++) {
-            printf("\tItem #%i (%u) ---> (%s -> %.8f) (%u -> %u) ---> %u\n", j, (unsigned int) current, current->key, *(double *) current->value, (unsigned int) current->key, (unsigned int) current->value, (unsigned int) current->next);
+            printf("\tItem #%i (%u) ---> (%s -> %.8f) (%u -> %u, HASH ---> %i) ---> %u\n", j, (unsigned int) current, current->key,
+                   *(double *) current->value, (unsigned int) current->key, (unsigned int) current->value, (int) smtb_hash(current->key, smtb_bucket_count(symTable)),
+                   (unsigned int) current->next);
         }
         printf("\n");
     }
     printf("\n<<<--------- SYMBOL TABLE(detail) } --------->>>\n\n\n");
 }
 
-int main(int argc, char **argv) {
+/* int main(int argc, char **argv) {
 
     int errorCheck, num;
     void *ptrElem;
@@ -319,6 +307,7 @@ int main(int argc, char **argv) {
     double d10 = 0.2010387;
     double d11 = 0.99887766;
 
+
     smtb_put(smtb, "Vidan", &d1);
     smtb_put(smtb, "Ivan", &d2);
     smtb_put(smtb, "Ljubisa", &d3);
@@ -330,10 +319,13 @@ int main(int argc, char **argv) {
     smtb_put(smtb, "Ljubec", &d9);
     smtb_put(smtb, "Ljisa", &d10);
     smtb_put(smtb, "<<< TEST_02 >>>", &d11);
+
     smtb_print_detail(smtb);
 
     smtb_free(smtb);
 
     return (EXIT_SUCCESS);
 
-}
+} */
+
+
