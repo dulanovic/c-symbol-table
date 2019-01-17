@@ -1,5 +1,5 @@
 
-/* #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -192,4 +192,3 @@ void smtb_print(SymTable symTable) {
     }
     printf("\n<<<--------- SYMBOL TABLE } --------->>>\n\n");
 }
- */
