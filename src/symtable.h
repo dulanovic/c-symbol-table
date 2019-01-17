@@ -14,5 +14,6 @@ void *smtb_get(SymTable symTable, const char *key);
 void *smtb_remove(SymTable symTable, const char *key);
 void smtb_map(SymTable symTable, void (*func)(const char *key, void *value, void *extra), const void *extra);
 void smtb_print(SymTable symTable);
+void smtb_print_detail(SymTable symTable);
 
 #endif

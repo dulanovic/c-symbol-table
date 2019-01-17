@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
     }
     fclose(file);
 
-    smtb_print(smtb);
+    smtb_print_detail(smtb);
 
     smtb_free(smtb);
 
