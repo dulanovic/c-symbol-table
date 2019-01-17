@@ -6,7 +6,6 @@
 #include "symtable.h"
 
 static size_t BUCKETCOUNT_EXPANSION[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
-// static size_t BUCKETCOUNT_EXPANSION[] = {5, 10, 20, 40, 8191, 16381, 32749, 65521};
 
 struct SymbolTable {
     const void **buckets;
@@ -23,7 +22,7 @@ struct Binding {
 static size_t smtb_hash(const char *key, size_t bucketCount) {
     const size_t h = 65599;
     size_t hash = 0;
-    for (size_t i = 0; key[i] != '\0'; i++) {
+    for (size_t i = 0; key[i] != 0; i++) {
         hash = hash * h + (size_t) key[i];
     }
     return (hash % bucketCount);
@@ -46,19 +45,12 @@ static size_t smtb_count_empty_buckets(SymTable symTable) {
             empty++;
         }
     }
-    printf("    EMPTY ---> %i\nNON-EMPTY ---> %i\n", empty, nonEmpty);
+    printf("    EMPTY ---> %i\nNON-EMPTY ---> %i\n", (int) empty, (int) nonEmpty);
     return nonEmpty;
 }
 
-void smtb_move(SymTable symTable, const char *key) {
+static void smtb_expand(SymTable symTable) {
     assert(symTable != NULL);
-    assert(key != NULL);
-    //
-}
-
-void smtb_expand(SymTable symTable) {
-    assert(symTable != NULL);
-    printf("\n\n<<< EXPANSION !!! >>>\n");
     if (symTable->expansionState == (sizeof(BUCKETCOUNT_EXPANSION) / sizeof(BUCKETCOUNT_EXPANSION[0]) - 1)) {
         return;
     }
