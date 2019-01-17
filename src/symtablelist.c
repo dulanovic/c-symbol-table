@@ -98,7 +98,7 @@ void *smtb_replace(SymTable symTable, const char *key, const void *value) {
     struct Node *current;
     for (current = (struct Node *) symTable->first; current != NULL; current = current->next) {
         if (strcmp(current->key, key) == 0) {
-            void *oldValue = current->value;
+            void *oldValue = (void *) current->value;
             current->value = value;
             return (void *) oldValue;
         }
