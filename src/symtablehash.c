@@ -244,21 +244,41 @@ void smtb_map(SymTable symTable, void (*func)(const char *key, void *value, void
 
 void smtb_print(SymTable symTable) {
     assert(symTable != NULL);
-    printf("\n<<<--------- { SYMBOL TABLE --------->>>\n\n");
+    /* FILE *output = fopen("../output.txt", "w");
+    if (output == NULL) {
+        output = stdout;
+    } */
+    if (smtb_getLength(symTable) == 0) {
+        printf("!!! Symbol table currently has no elements !!!\n");
+        return;
+    }
+    FILE *output = stdout;
+    // printf("\n<<<--------- { SYMBOL TABLE --------->>>\n\n");
+    fprintf(output, "\n<<<--------- { SYMBOL TABLE --------->>>\n\n");
     for (size_t i = 0; i < smtb_bucket_count(symTable); i++) {
-        printf("<- BUCKET[%i] ->\n", (int) (i + 1));
+        // printf("<- BUCKET[%i] ->\n", (int) (i + 1));
+        fprintf(output, "<- BUCKET[%i] ->\n", (int) (i + 1));
         int j = 1;
         struct Binding *current = (struct Binding *) symTable->buckets[i];
         for (; current != NULL; current = current->next, j++) {
-            printf("\t Item #%i ---> (%s -> %.8f)\n", j, current->key, *(double *) current->value);
+            // printf("\t Item #%i ---> (%s -> %i)\n", j, current->key, *(int *) current->value);
+            fprintf(output, "\t Item #%i ---> (%s -> %i)\n", j, current->key, *(int *) current->value);
         }
-        printf("\n\n");
+        // printf("\n\n");
+        fprintf(output, "\n");
     }
-    printf("\n<<<--------- SYMBOL TABLE } --------->>>\n\n\n");
+    // printf("\n<<<--------- SYMBOL TABLE } --------->>>\n\n\n");
+    fprintf(output, "Total number of buckets: %i\n", (int) smtb_bucket_count(symTable));
+    fprintf(output, "Total number of items: %i\n\n", smtb_getLength(symTable));
+    fprintf(output, "\n<<<--------- SYMBOL TABLE } --------->>>\n\n\n");
 }
 
 void smtb_print_detail(SymTable symTable) {
     assert(symTable != NULL);
+    if (smtb_getLength(symTable) == 0) {
+        printf("!!! Symbol table currently has no elements !!!\n");
+        return;
+    }
     printf("\n<<<--------- { SYMBOL TABLE(detail) --------->>>\n\n");
     for (size_t i = 0; i < smtb_bucket_count(symTable); i++) {
         printf("<- BUCKET[%i] ->\n\tAddress ---> %u (%u)\n", (int) (i + 1), (unsigned int) (symTable->buckets + i),
@@ -266,11 +286,63 @@ void smtb_print_detail(SymTable symTable) {
         int j = 1;
         struct Binding *current = (struct Binding *) symTable->buckets[i];
         for (; current != NULL; current = current->next, j++) {
-            printf("\tItem #%i (%u) ---> (%s -> %.8f) (%u -> %u, HASH ---> %i) ---> %u\n", j, (unsigned int) current, current->key,
-                   *(double *) current->value, (unsigned int) current->key, (unsigned int) current->value, (int) smtb_hash(current->key, smtb_bucket_count(symTable)),
+            printf("\tItem #%i (%u) ---> (%s -> %.8f) (%u -> %u, HASH ---> %i) ---> %u\n", j,
+                   (unsigned int) current,
+                   current->key,
+                   *(double *) current->value, (unsigned int) current->key, (unsigned int) current->value,
+                   (int) smtb_hash(current->key, smtb_bucket_count(symTable)),
                    (unsigned int) current->next);
         }
         printf("\n");
     }
+    printf("Total number of buckets: %i\n", (int) smtb_bucket_count(symTable));
+    printf("Total number of items: %i\n\n", smtb_getLength(symTable));
     printf("\n<<<--------- SYMBOL TABLE(detail) } --------->>>\n\n\n");
+}
+
+int smtb_compare(SymTable symTable1, SymTable symTable2) {
+    assert(symTable1 != NULL);
+    assert(symTable2 != NULL);
+    FILE *report = fopen("../cmpreport.txt", "w");
+    if (report == NULL) {
+        perror("Report file error\n");
+        return -1;
+    }
+    // printf("<<<--- COMPARING SYMBOL TABLES --->>>\n\n\n");
+    fprintf(report, "<<<--- COMPARING SYMBOL TABLES --->>>\n\n\n");
+    if (smtb_bucket_count(symTable1) != smtb_bucket_count(symTable2)) {
+        // printf("BUCKET_COUNT(smtb_1) ---> %i\nBUCKET_COUNT(smtb_2) ---> %i\n\n", smtb_bucket_count(symTable1), smtb_bucket_count(symTable2));
+        fprintf(report, "BUCKET_COUNT(smtb_1) ---> %i\nBUCKET_COUNT(smtb_2) ---> %i\n\n", smtb_bucket_count(symTable1), smtb_bucket_count(symTable2));
+        // return -1;
+    }
+    if (smtb_getLength(symTable1) != smtb_getLength(symTable2)) {
+        // printf("SMTB_LENGTH(smtb_1) --->%i\nSMTB_LENGTH(smtb_2) ---> %i\n\n", smtb_getLength(symTable1), smtb_getLength(symTable2));
+        fprintf(report, "SMTB_LENGTH(smtb_1) --->%i\nSMTB_LENGTH(smtb_2) ---> %i\n\n", smtb_getLength(symTable1), smtb_getLength(symTable2));
+        // return -1;
+    }
+    struct Binding *iterator1, *iterator2;
+    size_t i = 0;
+    for (; i < smtb_bucket_count(symTable1); i++) {
+        iterator1 = (struct Binding *) symTable1->buckets[i];
+        iterator2 = (struct Binding *) symTable2->buckets[i];
+        for (; (iterator1 != NULL && iterator2 != NULL); iterator1 = iterator1->next, iterator2 = iterator2->next) {
+            // printf("%s ?? %s\n", iterator1->key, iterator2->key);
+            // printf("%i ?? %i\n", *(int *) iterator1->value, *(int *) iterator2->value);
+            fprintf(report, "%s ?? %s\n", iterator1->key, iterator2->key);
+            fprintf(report, "%i ?? %i\n", *(int *) iterator1->value, *(int *) iterator2->value);
+            if (strcmp(iterator1->key, iterator2->key) != 0) {
+                // printf("KEYS ARE DIFFERENT!!! [ABORT]\n");
+                fprintf(report, "KEYS ARE DIFFERENT!!! [ABORT]\n");
+                // return -1;
+            }
+            if ((*(int *) iterator1->value) != (*(int *) iterator2->value)) {
+                // printf("VALUES ARE DIFFERENT!!! [ABORT]\n");
+                fprintf(report, "VALUES ARE DIFFERENT!!! [ABORT]\n");
+                // return -1;
+            }
+        }
+    }
+    fclose(report);
+    // printf("SYMBOL TABLES ARE IDENTICAL!!!\n");
+    return 0;
 }

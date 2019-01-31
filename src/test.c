@@ -48,9 +48,9 @@ static void smtb_test_remove(SymTable symTable, const char *key) {
     printf("\n\n");
 }
 
-int main(int argc, char **argv) {
+// int main(int argc, char **argv) {
 
-    int errorCheck, num;
+    /* int errorCheck, num;
     void *ptrElem;
     const char *criteria;
     FILE *file = fopen("../_data.txt", "r");
@@ -94,6 +94,54 @@ int main(int argc, char **argv) {
 
     smtb_free(smtb);
 
-    return (EXIT_SUCCESS);
+    return (EXIT_SUCCESS); */
 
-}
+    /* SymTable smtb1 = smtb_new();
+    SymTable smtb2 = smtb_new();
+    int errorCheck;
+    char key1[2] = "a";
+    char key2[2] = "b";
+    char key3[2] = "c";
+    char key4[2] = "d";
+    char key5[2] = "e";
+    char key6[2] = "f";
+    char key7[2] = "g";
+    char key8[2] = "h";
+    char key9[2] = "i";
+    char key10[2] = "j";
+    int val1 = 0;
+    int val2 = 1;
+    int val3 = 2;
+    int val4 = 3;
+    int val5 = 4;
+    int val6 = 5;
+    int val7 = 6;
+    int val8 = 7;
+    int val9 = 8;
+    int val10 = 9;
+    smtb_put(smtb1, key1, &val1);
+    smtb_put(smtb2, key1, &val1);
+    smtb_put(smtb1, key2, &val2);
+    smtb_put(smtb2, key2, &val2);
+    smtb_put(smtb1, key3, &val3);
+    smtb_put(smtb2, key3, &val3);
+    smtb_put(smtb1, key4, &val4);
+    smtb_put(smtb2, key4, &val4);
+    smtb_put(smtb1, key5, &val5);
+    smtb_put(smtb2, key5, &val5);
+    smtb_put(smtb1, key6, &val6);
+    smtb_put(smtb2, key6, &val6);
+    smtb_put(smtb1, key7, &val7);
+    smtb_put(smtb2, key7, &val7);
+    smtb_put(smtb1, key8, &val8);
+    smtb_put(smtb2, key8, &val8);
+    smtb_put(smtb1, key9, &val9);
+    smtb_put(smtb2, key9, &val9);
+    errorCheck = smtb_compare(smtb1, smtb2);
+    if (errorCheck == 0) {
+        printf("\nSymbol tables are completely the same!!!\n");
+    } else {
+        printf("\n<--- Symbol tables are not the same! --->\n");
+    } */
+
+// }
